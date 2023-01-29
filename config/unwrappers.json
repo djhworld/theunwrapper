@@ -1,0 +1,150 @@
+[
+    {
+        "host": "aka.ms",
+        "description": "Microsoft link shortener (aka.ms)"
+    },
+    {
+        "host": "amzn.to",
+        "description": "Amazon link shortener"
+    },
+    {
+        "host": "bbc.in",
+        "description": "BBC link shortener"
+    },
+    {
+        "host": "bit.ly",
+        "description": "bit.ly link shortener"
+    },
+    {
+        "host": "buff.ly",
+        "description": "buff.ly link shortener"
+    },
+    {
+        "host": "cbsn.ws",
+        "description": "CBS News link shortener"
+    },
+    {
+        "host": "cfl.re",
+        "description": "Cloudflare link shortener"
+    },
+    {
+        "host": "cnet.co",
+        "description": "CNET link shortener"
+    },
+    {
+        "host": "ebay.to",
+        "description": "eBay link shortener"
+    },
+    {
+        "host": "econ.st",
+        "description": "Economist link shortener"
+    },
+    {
+        "host": "econ.trib.al",
+        "description": "Economist trib.al link shortener"
+    },
+    {
+        "host": "lnkd.in",
+        "description": "LinkedIn link shortener"
+    },
+    {
+        "host": "mse.me",
+        "description": "MoneySavingExpert.com link shortener"
+    },
+    {
+        "host": "msft.it",
+        "description": "Microsoft link shortener (msft.it)"
+    },
+    {
+        "host": "n.pr",
+        "description": "NPR link shortener"
+    },
+    {
+        "host": "nbcnews.to",
+        "description": "NBC News link shortener"
+    },
+    {
+        "host": "nyer.cm",
+        "description": "New Yorker link shortener (broken)"
+    },
+    {
+        "host": "nyti.ms",
+        "description": "NYTimes link shortener"
+    },
+    {
+        "host": "reut.rs",
+        "description": "Reuters link shortener"
+    },
+    {
+        "host": "t.co",
+        "description": "Twitter link shortener"
+    },
+    {
+        "host": "tcrn.ch",
+        "description": "TechCrunch link shortener"
+    },
+    {
+        "host": "trib.al",
+        "description": "trib.al link shortener"
+    },
+    {
+        "host": "wapo.st",
+        "description": "Washington Post link shortener"
+    },
+    {
+        "host": "xbx.lv",
+        "description": "Microsoft Xbox link shortener"
+    },
+    {
+        "host": "youtu.be",
+        "description": "YouTube link shortener (youtu.be)"
+    },
+    {
+        "host": "yt.be",
+        "description": "YouTube link shortener (yt.be)"
+    },
+    {
+        "host": "aje.io",
+        "description": "Al Jazeera link shortener"
+    },
+    {
+        "host": "bloom.bg",
+        "description": "Bloomberg link shortener"
+    },
+    {
+        "host": "on.wsj.com",
+        "description": "Wall Street Journal link shortener"
+    },
+    {
+        "host": "on.ft.com",
+        "description": "Financial Times link shortener (on.ft.com)"
+    },
+    {
+        "host": "ft.trib.al",
+        "description": "Financial Times trib.al link shortener (ft.trib.al)"
+    },
+    {
+        "host": "tes.co",
+        "description": "Tesco link shortener"
+    },
+    {
+        "host": "rb.gy",
+        "description": "rb.gy link shortener"
+    },
+    {
+        "host": "on.forbes.com",
+        "description": "Forbes link shortener"
+    },
+    {
+        "host": "gatesnot.es",
+        "description": "Bill Gates notes link shortener"
+    },
+    {
+        "host": "goo.gle",
+        "description": "Google link shortener"
+    },
+    {
+        "host": "mzl.la",
+        "description": "Mozilla link shortener"
+    }
+]
