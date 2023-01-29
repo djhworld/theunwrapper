@@ -10,6 +10,8 @@ A system that can walk short link services like t.co to get the underlying link.
 
 Can be used in conjunction with a reverse proxy that sets the `X-Forwarded-Host` header, and presents the user with a page with the cleaned link.
 
+![Image](theunwrapper.png)
+
 ## Supports
 
 Mainly wrote this for t.co but also supports others, see config file here: https://github.com/djhworld/theunwrapper/blob/main/config/unwrappers.json
