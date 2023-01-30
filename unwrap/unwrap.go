@@ -19,6 +19,7 @@ type Unwrapper struct {
 }
 
 func New(host, description, upstreamDNSIPPort string) *Unwrapper {
+	// Setup dialer to use upstream DNS
 	dialer := &net.Dialer{
 		Resolver: &net.Resolver{
 			PreferGo: true,
@@ -31,15 +32,15 @@ func New(host, description, upstreamDNSIPPort string) *Unwrapper {
 		},
 	}
 
-	dialContext := func(ctx context.Context, network, addr string) (net.Conn, error) {
+	transport := *(http.DefaultTransport.(*http.Transport))
+	transport.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
 		return dialer.DialContext(ctx, network, addr)
 	}
 
-	transport := *(http.DefaultTransport.(*http.Transport))
-	transport.DialContext = dialContext
 	client := http.Client{
 		Transport: &transport,
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			// Don't follow redirects
 			return http.ErrUseLastResponse
 		},
 		Timeout: 3 * time.Second,
@@ -60,6 +61,8 @@ func (c *Unwrapper) Description() string {
 	return c.description
 }
 
+// Do will perform a HEAD request for the given host and path, and check for the
+// Location header, if this exists the url contained within will be returned.
 func (c *Unwrapper) Do(path string) (*url.URL, *url.URL, error) {
 	endpointStr := fmt.Sprintf("https://%s/%s", c.host, path)
 	endpoint, _ := url.Parse(endpointStr)

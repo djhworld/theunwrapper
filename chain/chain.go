@@ -20,10 +20,9 @@ func New(r *http.Request, unwrappers map[string]*unwrap.Unwrapper) (*ChainedUnwr
 		if start == nil {
 			return nil, ErrNoUnwrapperFound
 		} else {
-			log.Info().Msgf("using resolver: %s", start.Host())
+			log.Info().Msgf("using unwrapper for: %s", start.Host())
 		}
 	} else {
-		//start = unwrappers["t.co"]
 		return nil, ErrNoUnwrapperFound
 	}
 
@@ -36,6 +35,8 @@ func New(r *http.Request, unwrappers map[string]*unwrap.Unwrapper) (*ChainedUnwr
 	}, nil
 }
 
+// ChainEntry describes the transition from moving to one URL to the next, given
+// the unwrapper that was used
 type ChainEntry struct {
 	From  url.URL
 	To    url.URL
@@ -51,24 +52,32 @@ type ChainedUnwrapper struct {
 	err        error
 }
 
+// Err returns the last error set
 func (c *ChainedUnwrapper) Err() error {
 	return c.err
 }
 
+// Err returns the currently set URL
 func (c *ChainedUnwrapper) Last() *url.URL {
 	return c.ur
 }
 
+// Err returns a slice of ChainEntry structs that describe the
+// hops visited before finding the final URL
 func (c *ChainedUnwrapper) Visited() []ChainEntry {
 	return c.chain
 }
 
+// Next will visit the next endpoint in the chain.
+// Returns false when the end of the chain is reached or if there is an error
 func (c *ChainedUnwrapper) Next() bool {
+	// try to ensure we don't visit the same URL twice
 	if _, ok := c.visitList[c.ur.String()]; ok {
 		log.Error().Msg("cycle detected!")
 		c.err = errors.New("cycle detetected")
 		return false
 	}
+
 	endpoint, result, err := c.unwrapper.Do(c.ur.Path[1:])
 	if err != nil {
 		c.err = err
