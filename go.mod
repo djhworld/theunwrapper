@@ -1,4 +1,4 @@
-module github.com/djhword/theunwrapper
+module github.com/djhworld/theunwrapper
 
 go 1.19
 

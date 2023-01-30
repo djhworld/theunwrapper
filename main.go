@@ -11,9 +11,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/djhword/theunwrapper/chain"
-	"github.com/djhword/theunwrapper/queryparam"
-	"github.com/djhword/theunwrapper/unwrap"
+	"github.com/djhworld/theunwrapper/chain"
+	"github.com/djhworld/theunwrapper/queryparam"
+	"github.com/djhworld/theunwrapper/unwrap"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
