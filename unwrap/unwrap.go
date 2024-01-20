@@ -9,16 +9,18 @@ import (
 	"net/url"
 	"time"
 
+	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/rs/zerolog/log"
 )
 
 type Unwrapper struct {
-	host        string
-	description string
-	httpClient  *http.Client
+	host                 string
+	description          string
+	permittedQueryParams mapset.Set[string]
+	httpClient           *http.Client
 }
 
-func New(host, description, upstreamDNSIPPort string) *Unwrapper {
+func New(host, description, upstreamDNSIPPort string, permittedQueryParams []string) *Unwrapper {
 	// Setup dialer to use upstream DNS
 	dialer := &net.Dialer{
 		Resolver: &net.Resolver{
@@ -46,10 +48,16 @@ func New(host, description, upstreamDNSIPPort string) *Unwrapper {
 		Timeout: 3 * time.Second,
 	}
 
+	permittedQPs := mapset.NewSet[string]()
+	for _, qp := range permittedQueryParams {
+		permittedQPs.Add(qp)
+	}
+
 	return &Unwrapper{
-		host:        host,
-		description: description,
-		httpClient:  &client,
+		host:                 host,
+		description:          description,
+		permittedQueryParams: permittedQPs,
+		httpClient:           &client,
 	}
 }
 
@@ -59,6 +67,10 @@ func (c *Unwrapper) Host() string {
 
 func (c *Unwrapper) Description() string {
 	return c.description
+}
+
+func (c *Unwrapper) PermittedQueryParams() mapset.Set[string] {
+	return c.permittedQueryParams
 }
 
 // Do will perform a HEAD request for the given host and path, and check for the

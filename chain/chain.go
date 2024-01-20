@@ -2,9 +2,11 @@ package chain
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 
+	"github.com/djhworld/theunwrapper/queryparam"
 	"github.com/djhworld/theunwrapper/unwrap"
 	"github.com/rs/zerolog/log"
 )
@@ -78,7 +80,15 @@ func (c *ChainedUnwrapper) Next() bool {
 		return false
 	}
 
-	endpoint, result, err := c.unwrapper.Do(c.ur.Path[1:])
+	var path string
+	if allowedParams := c.unwrapper.PermittedQueryParams(); allowedParams.Cardinality() > 0 {
+		newUr := queryparam.Permit(*c.ur, allowedParams)
+		path = fmt.Sprintf("%s?%s", c.ur.Path[1:], newUr.RawQuery)
+	} else {
+		path = c.ur.Path[1:]
+	}
+
+	endpoint, result, err := c.unwrapper.Do(path)
 	if err != nil {
 		c.err = err
 		return false

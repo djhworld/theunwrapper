@@ -113,8 +113,9 @@ func configureLogging() {
 }
 
 type unwrapperDef struct {
-	Host        string
-	Description string
+	Host                 string
+	Description          string
+	PermittedQueryParams []string
 }
 
 func loadUnwrappers() {
@@ -133,7 +134,7 @@ func loadUnwrappers() {
 	knownUnwrappers = make(map[string]*unwrap.Unwrapper)
 	for _, d := range unwrapperDefs {
 		log.Debug().Msgf("creating unwrapper for: %s (%s)", d.Host, d.Description)
-		knownUnwrappers[d.Host] = unwrap.New(d.Host, d.Description, *flagUpstreamDNS)
+		knownUnwrappers[d.Host] = unwrap.New(d.Host, d.Description, *flagUpstreamDNS, d.PermittedQueryParams)
 	}
 	log.Info().Msgf("loaded %d link unwrappers", len(knownUnwrappers))
 }

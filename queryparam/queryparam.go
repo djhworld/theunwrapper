@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"strings"
 
+	mapset "github.com/deckarep/golang-set/v2"
 	"github.com/rs/zerolog/log"
 )
 
@@ -92,6 +93,33 @@ func Strip(ur url.URL) *url.URL {
 		}
 		ur.RawQuery = q.Encode()
 		log.Debug().Msgf("stripped %d query params from link", stripCount)
+	}
+
+	if ur.Fragment != "" {
+		ur.Fragment = ""
+	}
+	if ur.RawFragment != "" {
+		ur.RawFragment = ""
+	}
+
+	return &ur
+}
+
+// Permit will strip all query parameters except the ones in the allowlist
+func Permit(ur url.URL, allowlist mapset.Set[string]) *url.URL {
+	q := ur.Query()
+
+	if len(q) > 0 {
+		var stripCount int = 0
+		for k, _ := range q {
+			if !allowlist.Contains(k) {
+				q.Del(k)
+				stripCount++
+				continue
+			}
+		}
+		ur.RawQuery = q.Encode()
+		log.Info().Msgf("stripped %d query params from link", stripCount)
 	}
 
 	if ur.Fragment != "" {
