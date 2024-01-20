@@ -16,8 +16,17 @@ var (
 )
 
 func New(r *http.Request, unwrappers map[string]*unwrap.Unwrapper) (*ChainedUnwrapper, error) {
-	var start *unwrap.Unwrapper
-	if host := r.Header.Get("X-Forwarded-Host"); host != "" {
+	var (
+		host  string
+		start *unwrap.Unwrapper
+	)
+
+	host = r.Header.Get("X-Forwarded-Host")
+	if host == "" {
+		host = r.Host
+	}
+
+	if host != "" {
 		start = unwrappers[host]
 		if start == nil {
 			return nil, ErrNoUnwrapperFound
