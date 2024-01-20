@@ -146,5 +146,10 @@
     {
         "host": "mzl.la",
         "description": "Mozilla link shortener"
+    },
+    {
+        "host": "trk.klclick.com",
+        "description": "usually put in front of unsubscribe links on emails",
+        "permittedQueryParams": ["upn"]
     }
 ]
