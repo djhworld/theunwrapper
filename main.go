@@ -18,7 +18,11 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var flagPort = flag.Uint("port", 8080, "port")
+var flagHttpPort = flag.Uint("http-port", 8080, "http port")
+var flagHttps = flag.Bool("tls", false, "listen on https")
+var flagHttpsPort = flag.Uint("https-port", 8443, "https port")
+var flagCertFile = flag.String("cert", "", "path to certificate file")
+var flagKeyFile = flag.String("key", "", "path to certificate key file")
 var flagUpstreamDNS = flag.String("upstream-dns", "1.1.1.1:53", "upstream dns IP:Port, defaults to cloudflare")
 var flagLogFormat = flag.String("log-format", "json", "log format, options are [pretty,json]")
 var flagLogDebug = flag.Bool("debug", false, "turn on debug logging")
@@ -90,10 +94,30 @@ func main() {
 	flag.Parse()
 	configureLogging()
 
-	log.Info().Msgf("starting unwrapper service on port: %d", *flagPort)
+	httpsMessage := ""
+	if *flagHttps {
+		httpsMessage = fmt.Sprintf(" and https port: %d", *flagHttpsPort)
+	}
+	log.Info().Msgf("starting unwrapper service on http port: %d%s", *flagHttpPort, httpsMessage)
 	loadUnwrappers()
 	http.HandleFunc("/", handler)
-	http.ListenAndServe(fmt.Sprintf(":%d", *flagPort), nil)
+
+	if *flagHttps {
+		go func() {
+			if *flagCertFile == "" || *flagKeyFile == "" {
+				log.Fatal().Msgf("The -tls argument, requires -cert and -key to be supplied")
+			}
+			err := http.ListenAndServeTLS(fmt.Sprintf(":%d", *flagHttpsPort), *flagCertFile, *flagKeyFile, nil)
+			if err != nil {
+				log.Error().Err(err).Send()
+			}
+		}()
+	}
+
+	err := http.ListenAndServe(fmt.Sprintf(":%d", *flagHttpPort), nil)
+	if err != nil {
+		log.Error().Err(err).Send()
+	}
 }
 
 func configureLogging() {
